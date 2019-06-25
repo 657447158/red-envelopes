@@ -1,0 +1,59 @@
+// 主题色
+$themeColor: #F14D4B;
+
+// 定义字体大小
+$f14        :.14rem;
+$f16        :.16rem;
+$f18        :.18rem;
+$f20        :.20rem;
+$f22        :.22rem;
+$f24        :.24rem;
+$f26        :.26rem;
+$f28        :.28rem;
+$f30        :.30rem;
+$f32        :.32rem;
+$f34        :.34rem;
+$f36        :.36rem;
+$f38        :.38rem;
+$f40        :.40rem;
+
+// 定义字体颜色
+$fc01       :$themeColor;
+$fc02       :#333333;
+$fc03       :#666666;
+$fc04       :#999999;
+$fc05       :#878787;
+$fc06       :#262626;
+$fc07       :#00CFBF;
+$fc08       :#FEF087;
+$fc09       :#F9C300;
+$fc10       :#ffffff;
+$fc11       :#E2353A;
+
+// 定义背景色
+$bg01       :#ffffff;
+
+//定义下划线颜色
+$border01   :#CACACA;
+
+//底部导航图标字体颜色
+$navColor    :#999999;
+$navActiveColor: $themeColor;
+
+
+@mixin ellipsis($w:auto) {
+    width: $w;
+    overflow: hidden;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    word-wrap: normal;
+}
+/*多行文本溢出*/
+@mixin ellipsisLn($line) {
+    overflow : hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: $line;
+    -webkit-box-orient: vertical;
+}
