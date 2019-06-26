@@ -1,12 +1,12 @@
 <template>
     <div class="footer">
         <router-link tag="div" to="index" class="footer-item">
-            <span class="icon-mobile">&#xe76b;</span>
-            <span>首页</span>
+            <span class="nav-icon nav-icon-1"></span>
+            <span>发红包</span>
         </router-link>
         <router-link tag="div" to="personal-index" class="footer-item">
-            <span class="icon-mobile">&#xe720;</span>
-            <span>我</span>
+            <span class="nav-icon nav-icon-2"></span>
+            <span>我的</span>
         </router-link>
     </div>
 </template>
@@ -29,9 +29,25 @@
             font-size: $f28;
             color: $navColor;
         }
-        .icon-mobile {
+        .nav-icon {
             margin-right: .16rem;
-            font-size: $f40;
+            // font-size: $f40;
+            &-1 {
+                width: .38rem;
+                height: .45rem;
+                background: url('../../assets/images/nav-icon-1-default.png') no-repeat center / 100% 100%;
+            }
+            &-2 {
+                width: .52rem;
+                height: .41rem;
+                background: url('../../assets/images/nav-icon-2-default.png') no-repeat center / 100% 100%;
+            }
+        }
+        .router-link-exact-active .nav-icon-1 {
+            background: url('../../assets/images/nav-icon-1-active.png') no-repeat center / 100% 100%;
+        }
+        .router-link-exact-active .nav-icon-2 {
+            background: url('../../assets/images/nav-icon-2-active.png') no-repeat center / 100% 100%;
         }
     }
 </style>

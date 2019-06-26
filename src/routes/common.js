@@ -19,6 +19,36 @@ const routes = [
             title: '我的'
         },
         component: () => import('../pages/personal/index')
+    },
+    {
+        path: '/login',
+        name: 'login',
+        meta: {
+            title: '绑定手机号并登录'
+        },
+        component: () => import('../pages/login/index'),
+        children: [
+            {
+                path: '',
+                redirect: 'code'
+            },
+            {
+                path: '/login/code',
+                name: 'code',
+                meta: {
+                  title: '绑定手机号并登录'
+                },
+                component: () => import('../pages/login/login-code.vue')
+            },
+            {
+                path: '/login/psd',
+                name: 'psd',
+                meta: {
+                  title: '绑定手机号并登录'
+                },
+                component: () => import('../pages/login/login-psd.vue')
+            }
+        ]
     }
 ]
 

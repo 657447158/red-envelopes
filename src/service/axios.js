@@ -2,9 +2,6 @@ import axios from 'axios'
 import Toast from '@/components/toast'
 let baseURL = ''
 
-// 设置token
-axios.defaults.headers.token = localStorage.getItem('otctoken')
-
 export default function ajax (p) {
     let options = Object.assign({
         baseURL: baseURL,
@@ -26,9 +23,12 @@ export default function ajax (p) {
                 duration: 1000000
             })
         }
+        // 设置token
+        options.params.token = '556f6259-b9c3-4ea2-bf34-a54ce2af14bc'
+        options.params.mediaType= 'h5'
         axios({
             method: options.type,
-            baseURL: '/otc',
+            baseURL: '/api',
             url: options.url,
             params: options.params
         }).then(response => {

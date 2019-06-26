@@ -1,14 +1,16 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './routes'
-import ajax from './service'
+import Ajax from './service/axios'
+import Toast from './components/toast'
 import './components'
 import './utils/scale_750'
 import './assets/styles/layout.scss'
-// const VConsole = require('./utils/vconsole')
+
 
 Vue.config.productionTip = false
-Vue.prototype.ajax = ajax
+Vue.prototype.Ajax = Ajax
+Vue.use(Toast)
 
 router.beforeEach((to, from, next) => {
   let nodeList = document.querySelectorAll('.mask')

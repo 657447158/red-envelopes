@@ -2,6 +2,7 @@
 $themeColor: #F14D4B;
 
 // 定义字体大小
+$f12        :.12rem;
 $f14        :.14rem;
 $f16        :.16rem;
 $f18        :.18rem;
@@ -32,9 +33,13 @@ $fc11       :#E2353A;
 
 // 定义背景色
 $bg01       :#ffffff;
+$bg02       :$themeColor;
+
+// 定义按钮颜色
+$btn01      :$themeColor;
 
 //定义下划线颜色
-$border01   :#CACACA;
+$bor01   :#CACACA;
 
 //底部导航图标字体颜色
 $navColor    :#999999;

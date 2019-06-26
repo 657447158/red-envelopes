@@ -14,28 +14,13 @@ module.exports = {
     },
     devServer: {
         proxy: {
-            '/otc': {
-                target: 'http://129.211.29.207:8082',
+            '/api': {
                 changeOrigin: true,
+                target: 'http://129.211.29.207:8091/app/index',
                 pathRewrite: {
-                    '^/otc': ''
+                    '^/api': ''
                 }
-            },
-            '/upload': {
-                target: 'http://111.231.72.88:8091',
-                changeOrigin: true,
-                pathRewrite: {
-                    '^/upload': ''
-                }
-            },
-            '/app/': {
-                changeOrigin: true,
-                target: 'http://129.211.29.207:8091',
-                // 这个是本地的开发调试的环境
-                pathRewrite: {
-                    '^/app/': '/app/'
-                }
-            },
+            }
         }
     }
 }

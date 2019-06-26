@@ -40,4 +40,9 @@ const Toast = (options = {}) => {
   })
   return instance
 }
+
+Toast.install = (Vue) => {
+  Vue.prototype.Toast = Toast
+}
+
 export default Toast

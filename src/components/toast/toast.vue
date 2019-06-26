@@ -92,7 +92,7 @@ export default {
     .text{
       display:block;
       font-size: $f28;
-      color: $fc08;
+      color: $fc10;
     }
     .icon-mobile{
       display:inline-block;
@@ -102,7 +102,7 @@ export default {
       text-align: center;
       border-radius:50%;
       font-size:.7rem;
-      color: $fc08;
+      color: $fc10;
     }
     .loading,
     .sucess,
