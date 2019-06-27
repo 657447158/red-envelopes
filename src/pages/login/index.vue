@@ -1,13 +1,12 @@
 <template>
     <div class="login">
         <div class="login-tabs">
-            <span
+            <router-link
                 class="login-tabs-item"
-                :class="tabIndex === index && 'active'"
                 v-for="(item, index) in tabList"
                 :key="index"
-                @click="checkRouter(item.path, index)"
-            >{{item.name}}</span>
+                :to="item.path"
+            >{{item.name}}</router-link>
         </div>
         <router-view></router-view>
     </div>
@@ -28,13 +27,6 @@
                     }
                 ]
             }
-        },
-        methods: {
-            checkRouter (path, index) {
-                if (this.tabIndex === index) return
-                this.tabIndex = index                
-                this.$router.push(path)
-            }
         }
     }
 </script>
@@ -47,11 +39,12 @@
             align-items: center;
             font-size: $f30;
             color: $fc02;
+            height: .36rem;
             &-item {
                 width: 50%;
                 text-align: center;
             }
-            .active {
+            .router-link-exact-active {
                 color: $fc01;
                 font-size: $f36;
             }

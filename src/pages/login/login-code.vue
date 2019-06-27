@@ -46,8 +46,12 @@
                     mobile: this.mobile,
                     verifycode: this.verifycode
                 }).then(res => {
-                    if (res.code === '0000') {
+                    if (res.code === '1') {
                         console.log(res)
+                        this.Toast({
+                            type: 'sucess',
+                            message: '绑定成功'
+                        })
                     } else {
                         this.Toast({
                             type: 'error',

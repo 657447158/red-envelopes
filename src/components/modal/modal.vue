@@ -1,7 +1,7 @@
 <template>
     <transition enter-active-class="animation-fade-in" leave-active-class="animation-fade-out">
         <div class="otc-modal" :class="className" v-show="state" :style="styles.parentDistance">
-            <div class="mask"></div>
+            <div class="mask" @click="hide"></div>
             <transition name="fade" :enter-active-class="enterActiveClass" :leave-active-class="leaveActiveClass">
                 <div class="otc-modal-content" v-show="state" :style="styles.childDistance">
                     <slot/>

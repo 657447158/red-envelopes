@@ -49,6 +49,60 @@ const routes = [
                 component: () => import('../pages/login/login-psd.vue')
             }
         ]
+    },
+    {
+        path: '/record',
+        name: 'record',
+        meta: {
+            title: '红包记录'
+        },
+        component: () => import('../pages/candy/record/index.vue'),
+        children: [
+            {
+                path: '',
+                redirect: '/record/get'
+            },
+            {
+                path: '/record/get',
+                name: 'record-get',
+                meta: {
+                    title: '抢到红包'
+                },
+                component: () => import('../pages/candy/record/record-get.vue')
+            },
+            {
+                path: '/record/send',
+                name: 'record-send',
+                meta: {
+                    title: '发出红包'
+                },
+                component: () => import('../pages/candy/record/record-send.vue')
+            }
+        ]
+    },
+    {
+        path: '/details',
+        name: 'details',
+        meta: {
+            title: '红包详情'
+        },
+        component: () => import('../pages/candy/details/index.vue')
+    },
+    {
+        path: '/open-candy',
+        name: 'open-candy',
+        meta: {
+            title: '开红包'
+        },
+        component: () => import('../pages/candy/open/index.vue')
+    },
+    {
+        path: '/share-candy',
+        name: 'share-candy',
+        meta: {
+            title: '分享红包'
+        },
+        component: () => import('../pages/candy/share/index.vue')
     }
 ]
 

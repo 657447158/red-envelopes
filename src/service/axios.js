@@ -3,13 +3,17 @@ import Toast from '@/components/toast'
 let baseURL = ''
 
 export default function ajax (p) {
-    let options = Object.assign({
+    let options = {
         baseURL: baseURL,
         type: 'POST',
         url: '',
         loading: true,
-        params: {}
-    }, p)
+        params: {
+            token: '556f6259-b9c3-4ea2-bf34-a54ce2af14bc',
+            mediaType: 'h5'
+        }
+    }
+    options.params = Object.assign({...options.params}, {...p})
     return new Promise((resolve, reject) => {
         let t
         let timer
@@ -24,8 +28,6 @@ export default function ajax (p) {
             })
         }
         // 设置token
-        options.params.token = '556f6259-b9c3-4ea2-bf34-a54ce2af14bc'
-        options.params.mediaType= 'h5'
         axios({
             method: options.type,
             baseURL: '/api',
