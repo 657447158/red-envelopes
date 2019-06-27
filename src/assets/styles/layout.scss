@@ -114,7 +114,15 @@ img {
 .animation-translate-bottom-out {
 	animation: bottomOut ease .4s forwards
 }
+
+.animation-translate-right-in {
+	animation: rightIn ease .4s forwards
+}
   
+.animation-translate-right-out {
+	animation: rightOut ease .4s forwards
+}
+
 @keyframes bottomIn {
 	0% {
 	  	transform: translateY(100%)
@@ -132,5 +140,24 @@ img {
   
 	to {
 	  	transform: translateY(100%)
+	}
+}
+@keyframes rightIn {
+	0% {
+	  	transform: translateX(100%)
+	}
+  
+	to {
+	  	transform: translateX(0)
+	}
+}
+  
+@keyframes rightOut {
+	0% {
+	  	transform: translateX(0)
+	}
+  
+	to {
+		rightOut: translateX(100%)
 	}
 }

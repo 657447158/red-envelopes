@@ -21,7 +21,7 @@
             <div class="item-sub">
                 <span class="left gray">持有 ETH 总量<span>2000</span></span>
                 <div class="right">
-                    <span class="gray">改为</span><span class="green">普通红包</span>
+                    <span class="gray">改为</span><span class="green" @click="changeType">{{packageType}}</span>
                 </div>
             </div>
             <div class="item border-bottom">
@@ -35,36 +35,70 @@
                 <span class="right"></span>
             </div>
         </div>
-        <button class="put-in">塞钱进红包</button>
-         <otc-modal :show="show" @hide="hide" dir="right">
+        <button class="put-in" @click="showPasswordMoadl">塞钱进红包</button>
+         <otc-modal :show="show" @hide="hide" dir="right" height="100%">
              <div class="type-item">
                  <div class="type-left">
-                       <input type="radio"  name="mtype" value="1"/>
-                        <label for="mtype">是</label>
+                       <label class="radio">
+                            <input type="radio" name="type" @change="changeChoose" ><i class="radios"></i>AAC
+                        </label>
+                 </div>
+                 <div class="type-right">AcuteAngleCoin</div>
+             </div>
+              <div class="type-item">
+                 <div class="type-left">
+                       <label class="radio">
+                            <input type="radio" name="type"><i class="radios"></i>ACC
+                        </label>
                  </div>
                  <div class="type-right">AcuteAngleCoin</div>
              </div>
         </otc-modal>
+         <otc-modal :show="showPassword" @hide="hidePassword">
+             <password-box></password-box>
+             <!-- <div class="passwordbox">
+
+             </div> -->
+        </otc-modal>
     </div>
 </template>
 <script>
-import Moadl from '@/components/modal/modal'
+import PasswordBox from './passwordBox';
+
+const NORMAL="普通红包";
+const LUCKY="拼手气红包";
 export default {
     data(){
         return{
-            show:true,
+            show:false,
+            packageType:NORMAL,
+            showPassword:false,
         }
     },
     methods:{
+        changeType(){
+            this.packageType = this.packageType ===NORMAL?LUCKY:NORMAL;
+        },
         showMoadl(){
             this.show = true;
         },
         hide(){
             this.show = false;
+        },
+        showPasswordMoadl(){
+            this.showPassword = true;
+        },
+        hidePassword(){
+            this.showPassword = false;
+        },
+        changeChoose(){
+            setTimeout(()=>{
+                this.hide()
+            },500);
         }
     },
     components:{
-        Moadl
+        PasswordBox
     }
 }
 </script>
@@ -146,6 +180,9 @@ export default {
                 opacity: .8;
             }
         }
+        .otc-modal-content{
+            height: 100%;
+        }
         .choose-modal{
             position: absolute;
             left: 0;
@@ -155,11 +192,63 @@ export default {
             background: red;
         }
         .type-item{
-            height:0.72rem;
+            // height:0.72rem;
             background: #ffffff;
             display:flex;
             align-items: center;
             justify-content: space-between;
+            padding: 0.2rem 0.2rem;
+            // input{
+            //     display: none;
+            // }
+            label{
+                display: flex;
+                align-items: center;
+                position: relative;
+                font-size:$f36;
+                font-weight:400;
+                color:rgba(38,38,38,1);
+                input{
+                    visibility: hidden;
+                    opacity: 0;
+                    position: absolute;
+                    left: 0;
+                    width: 0.72rem;
+                    height: 0.72rem;
+                    z-index: 99999;
+                    cursor: pointer;
+                }
+                input:checked + .radios{
+                    background: red;
+                }
+                .radios{
+                    display: inline-block;
+                    width: 0.72rem;
+                    height: 0.72rem;
+                    border-radius: 50%;
+                    background: #ffffff;
+                    border: 1px solid #dddddd;
+                    margin-right: 0.3rem;
+                    transition: all 300ms;
+                }
+                // width: 0.72rem;
+                // height:0.72rem;
+                // border-radius: 50%;
+
+            }
+            .type-right{
+                font-size:$f30;
+                font-weight:400;
+                color:rgba(135,135,135,1);
+                padding-right:1.4rem;
+            }
+        }
+        .passwordbox{
+            width:6.74rem;
+            height:4.64rem;
+            background:rgba(255,255,255,1);
+            border-radius:10px;
+            
         }
     }
 </style>
