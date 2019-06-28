@@ -36,7 +36,8 @@ export default {
         getMyInCandy () {
             this.Ajax({
                 method: 'getMyInCandy',
-                hasToken: 1
+                hasToken: 1,
+                pageNum: 1
             }).then(res => {
                 if (res.code === '1') {
                     this.list = res.data

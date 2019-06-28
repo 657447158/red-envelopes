@@ -34,7 +34,8 @@ export default {
         getMyOutCandy () {
             this.Ajax({
                 method: 'getMyOutCandy',
-                hasToken: 1
+                hasToken: 1,
+                pageNum: 1
             }).then(res => {
                 if (res.code === '1') {
                     this.list = res.data

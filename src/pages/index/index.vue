@@ -36,29 +36,26 @@
             </div>
         </div>
         <button class="put-in" @click="showPasswordMoadl">塞钱进红包</button>
-         <otc-modal :show="show" @hide="hide" dir="right" height="100%">
-             <div class="type-item">
-                 <div class="type-left">
-                       <label class="radio">
-                            <input type="radio" name="type" @change="changeChoose" ><i class="radios"></i>AAC
-                        </label>
-                 </div>
-                 <div class="type-right">AcuteAngleCoin</div>
-             </div>
-              <div class="type-item">
-                 <div class="type-left">
-                       <label class="radio">
-                            <input type="radio" name="type"><i class="radios"></i>ACC
-                        </label>
-                 </div>
-                 <div class="type-right">AcuteAngleCoin</div>
-             </div>
+        <otc-modal :show="show" @hide="hide" dir="right" height="100%">
+            <div class="type-item">
+                <div class="type-left">
+                    <label class="radio">
+                        <input type="radio" name="type" @change="changeChoose" ><i class="radios"></i>AAC
+                    </label>
+                </div>
+                <div class="type-right">AcuteAngleCoin</div>
+            </div>
+            <div class="type-item">
+                <div class="type-left">
+                    <label class="radio">
+                        <input type="radio" name="type"><i class="radios"></i>ACC
+                    </label>
+                </div>
+                <div class="type-right">AcuteAngleCoin</div>
+            </div>
         </otc-modal>
-         <otc-modal :show="showPassword" @hide="hidePassword">
-             <password-box></password-box>
-             <!-- <div class="passwordbox">
-
-             </div> -->
+        <otc-modal :show="showPassword" @hide="hidePassword">
+            <password-box></password-box>
         </otc-modal>
     </div>
 </template>
@@ -180,8 +177,8 @@ export default {
                 opacity: .8;
             }
         }
-        .otc-modal-content{
-            height: 100%;
+        /deep/ .otc-modal-content{
+            padding: .2rem;
         }
         .choose-modal{
             position: absolute;
@@ -192,12 +189,13 @@ export default {
             background: red;
         }
         .type-item{
-            // height:0.72rem;
+            height: 1.2rem;
             background: #ffffff;
             display:flex;
             align-items: center;
             justify-content: space-between;
             padding: 0.2rem 0.2rem;
+            border-bottom: 1px solid $bor01;
             // input{
             //     display: none;
             // }
