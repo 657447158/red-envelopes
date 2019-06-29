@@ -2,17 +2,61 @@
     <div class="login">
         <div class="login-box">
             <span class="label">+86 <i class="icon-mobile">&#xe6af;</i></span>
-            <input type="number" maxlength="11" placeholder="请输入手机号" />
+            <input type="number" maxlength="11" placeholder="请输入手机号" v-model="mobile" />
         </div>
         <div class="login-box">
             <span class="label">密码</span>
-            <input type="text" placeholder="请输入密码" />
+            <input type="password" placeholder="请输入密码" v-model="password" />
         </div>
-        <div class="login-btn">登录</div>
+        <div class="login-btn" @click="bindPhone">登录</div>
     </div>
 </template>
 <script>
-
+    export default {
+        data () {
+            return {
+                mobile: '',
+                password: ''
+            }
+        },
+        methods: {
+            bindPhone () {
+                if (!this.mobile) {
+                    this.Toast({
+                        message: '请输入手机号'
+                    })
+                    return
+                }
+                if (!this.password) {
+                    this.Toast({
+                        message: '请输入密码'
+                    })
+                    return
+                }
+                this.Ajax({
+                    method: 'bindLogin',
+                    hasToken: 0,
+                    mobile: this.mobile,
+                    password: this.password
+                }).then(res => {
+                    console.log(res)
+                    if (res.code === '1') {
+                        this.Toast({
+                            type: 'sucess',
+                            message: '绑定成功'
+                        })
+                    } else {
+                        this.Toast({
+                            type: 'error',
+                            message: res.msg
+                        })
+                    }
+                }).catch(err => {
+                    console.log(err)
+                })
+            }
+        }
+    }
 </script>
 <style lang="scss" scoped>
     .login {

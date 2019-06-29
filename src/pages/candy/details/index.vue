@@ -23,7 +23,7 @@
         <div class="details-intro" v-else>
             <span>已领{{info.useNumber}}个红包，共{{info.totalNumber}}个红包</span>
         </div>
-        <!-- <scroll-load :params="params">
+        <scroll-load :params="params">
             <ul class="details-list" slot="list">
                 <li
                     class="details-list-item"
@@ -49,8 +49,8 @@
                     </div>
                 </li>
             </ul>
-        </scroll-load> -->
-        <ul class="details-list">
+        </scroll-load>
+        <!-- <ul class="details-list">
             <li
                 class="details-list-item"
                 v-for="item in list"
@@ -74,7 +74,7 @@
                     <span>{{item.bestTip}}</span>
                 </div>
             </li>
-        </ul>
+        </ul> -->
     </div>
 </template>
 <script>
@@ -90,9 +90,6 @@ export default {
                 pageNum: 1
             }
         }
-    },
-    created () {
-        this.getInfo()
     },
     methods: {
         getList (val) {
