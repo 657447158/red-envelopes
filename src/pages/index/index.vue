@@ -246,6 +246,7 @@ export default {
                         width: 1.2rem;
                         font-size: $f30;
                         text-align: right;
+                        line-height: .34rem;
                     }
                 }
             }
