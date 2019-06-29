@@ -3,78 +3,104 @@
         <span class="img-box no-photo">
             <img src="" />
         </span>
-        <p class="give-out">共发放 <span>40</span> 枚 ETH</p>
+        <p class="give-out">共发放
+             <span v-if="candyType ===1">{{oneMoney*totalNumber}}</span> 
+             <span v-else>{{totalMoney}}</span>
+             枚 {{coinId}}</p>
         <div class="info-box">
             <div class="item border-bottom">
                 <span class="left">代币</span>
                 <div class="right" @click="showMoadl">
-                    <span class="orange mr-12">ETH</span>
+                    <span class="orange mr-12">{{coinId}}</span>
                     <span class="icon icon-mobile">&#xe6a8;</span>
                 </div>
             </div>
             <div class="item border-bottom">
-                <span class="left">代币总量</span>
+                <span class="left">{{candyType===1?"单个总量":"代币总量"}}</span>
                 <div class="right">
-                    <span class="gray mr-12">1333</span>枚
+                    <!-- <span class="gray mr-12">1333</span>枚 -->
+                     <input type="number" placeholder="发放个数" v-model="count" min="0">枚
                 </div>
             </div>
             <div class="item-sub">
-                <span class="left gray">持有 ETH 总量<span>2000</span></span>
+                <span class="left gray">持有 ETH 总量<span>{{totalCoin}}</span></span>
                 <div class="right">
-                    <span class="gray">改为</span><span class="green" @click="changeType">{{packageType}}</span>
+                    <span class="gray">改为</span><span class="green" @click="changeType">{{candyType===1?"手气红包":"普通红包"}}</span>
                 </div>
             </div>
             <div class="item border-bottom">
                 <span class="left">红包个数</span>
                 <div class="right">
-                    <input type="number" placeholder="填写个数">个
+                    <input type="number" placeholder="填写个数" v-model="totalNumber" min="0">个
                 </div>
             </div>
             <div class="item border-bottom">
-                <input class="left gray" placeholder="红包一响，黄金万两">
+                <input class="left gray" placeholder="红包一响，黄金万两" v-model="command">
                 <span class="right"></span>
             </div>
         </div>
         <button class="put-in" @click="showPasswordMoadl">塞钱进红包</button>
         <otc-modal :show="show" @hide="hide" dir="right" height="100%">
-            <div class="type-item">
+            <div style="width:100%;height:100%;overflow:scroll">
+                <div 
+                class="type-item"
+                v-for="(item,index) in coinsType"
+                :key=index
+                @click='selectCoinsType(item)'
+            >
                 <div class="type-left">
-                    <label class="radio">
-                        <input type="radio" name="type" @change="changeChoose" ><i class="radios"></i>AAC
-                    </label>
+                    <div class="avatar">
+                        <img :src="item.image" alt="">
+                    </div>
+                    {{item.title}}
                 </div>
-                <div class="type-right">AcuteAngleCoin</div>
+                <div class="type-right">{{item.name}}</div>
             </div>
-            <div class="type-item">
-                <div class="type-left">
-                    <label class="radio">
-                        <input type="radio" name="type"><i class="radios"></i>ACC
-                    </label>
-                </div>
-                <div class="type-right">AcuteAngleCoin</div>
             </div>
         </otc-modal>
-        <otc-modal :show="showPassword" @hide="hidePassword">
-            <password-box></password-box>
-        </otc-modal>
+        <div class="pass-wrapper">
+            <otc-modal :show="showPassword" @hide="hidePassword" className="modal-wrapper" dir="none">
+                <div class="pass-box">
+                    <h5>请输入支付密码</h5>
+                    <p>共需支付 <span v-if="candyType ===1">{{oneMoney*totalNumber}}</span><span v-else>{{totalMoney}}</span>  {{coinId}}</p>
+                    <password-box @getPwd="checkPassword"></password-box>
+                     <router-link tag="div" to="personal-index" class="tips">忘记密码？</router-link>
+                </div>
+            </otc-modal>
+        </div>
     </div>
 </template>
 <script>
 import PasswordBox from './passwordBox';
 
-const NORMAL="普通红包";
-const LUCKY="拼手气红包";
+
 export default {
     data(){
         return{
             show:false,
-            packageType:NORMAL,
+            candyType:1,
             showPassword:false,
+            coinsType:[],
+            coinId:0,
+            totalNumber:0,
+            totalMoney:0,//1手气红包，糖果总量
+            oneMoney:0,//普通红包，糖果单个总量
+            command:"",
+            count:'',
+            totalCoin:0,
         }
     },
+    mounted(){
+        this.getCoinsType();
+    },
     methods:{
+        selectCoinsType(item){
+            console.log(item);
+            this.coinId = item.name;
+            this.show = false;
+        },
         changeType(){
-            this.packageType = this.packageType ===NORMAL?LUCKY:NORMAL;
+            this.candyType = this.candyType ===1?2:1;
         },
         showMoadl(){
             this.show = true;
@@ -92,6 +118,74 @@ export default {
             setTimeout(()=>{
                 this.hide()
             },500);
+        },
+        checkPassword(psw){
+            this.showPassword = false;
+            this.Ajax({
+                method: 'checkUserPayPassword',
+                hasToken: 1,
+                payPassword:psw
+            }).then(res => {
+                console.log(res);
+               if(res.code === '1'){
+                   this.addCandy(res.data);
+               }else{
+                   this.Toast({
+                        type: 'error',
+                        message: res.msg
+                    })
+               }
+            }).catch(err => {
+                console.log(err)
+            })
+        },
+        addCandy(data){
+            this.Ajax({
+                method: 'addCandy',
+                hasToken: 1,
+                requestNo:new Date().getTime(),
+                coinId:this.coinId,
+                candyType:this.candyType,
+                totalNumber:this.totalNumber,
+                totalMoney:this.totalMoney,
+                oneMoney:this.oneMoney,
+                command:this.command,
+                payTimestamps:data.payTimestamps,
+                payCertificate:data.payCertificate,
+            }).then(res => {
+               if(res.code === '1'){
+                //    this.addCandy(res.data);
+                    console.log("发放成功");
+               }else{
+                   this.Toast({
+                        type: 'error',
+                        message: res.msg
+                    })
+               }
+            }).catch(err => {
+                console.log(err)
+            })
+        },
+        getCoinsType(){
+            this.Ajax({
+                method: 'getCoins',
+                hasToken: 1,
+            }).then(res => {
+                console.log(res);
+                if(res.code ==="1"){
+                    this.coinsType = res.data;
+                    console.log(this.coinsType);
+                    this.coinId = this.coinsType[0].name;
+                }
+            }).catch(err => {
+                console.log(err)
+            })
+        },
+    },
+    watch:{
+        count(val){
+            this.oneMoney = val;
+            this.totalMoney = val;
         }
     },
     components:{
@@ -126,10 +220,14 @@ export default {
             align-items: flex-end;
             font-size: $f30;
             color: $fc06;
+            max-width: 100%;
+            overflow: hidden;
             span{
                 margin: 0 .1rem;
                 font-size: .72rem;
                 color: $fc01;
+                max-width: 50%;
+                overflow: hidden;
             }
         }
         .info-box{
@@ -177,9 +275,50 @@ export default {
                 opacity: .8;
             }
         }
-        /deep/ .otc-modal-content{
-            padding: .2rem;
+        .pass-wrapper{
+            .modal-wrapper{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+             /deep/ .otc-modal-content{
+                background: transparent;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                .pass-box{
+                    width: 6.74rem;
+                    height: 4.64rem;
+                    border-radius: 0.1rem;
+                    background: #ffffff;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    h5{
+                        // margin: 0.66rem 0;
+                        margin-top: 0.66rem;
+                        text-align: center;
+                        font-size: $f36;
+                        color: #333333;
+                        font-weight: normal;
+                    }
+                    p{
+                        margin: 0.4rem;
+                        color:rgba(153,153,153,1);
+                        font-size: 0.28rem;
+                        span{
+                            color: $fc11 ;
+                        }
+                    }
+                    .tips{
+                        font-size: $f28;
+                        color: #00CFBF;
+                        margin-top: 0.4rem;
+                    }
+                }
+            }
         }
+       
         .choose-modal{
             position: absolute;
             left: 0;
@@ -196,43 +335,27 @@ export default {
             justify-content: space-between;
             padding: 0.2rem 0.2rem;
             border-bottom: 1px solid $bor01;
-            // input{
-            //     display: none;
-            // }
-            label{
+            
+            .type-left{
                 display: flex;
                 align-items: center;
-                position: relative;
-                font-size:$f36;
-                font-weight:400;
+                justify-content: center;
+                font-size: $f36;
                 color:rgba(38,38,38,1);
-                input{
-                    visibility: hidden;
-                    opacity: 0;
-                    position: absolute;
-                    left: 0;
+                .avatar{
                     width: 0.72rem;
                     height: 0.72rem;
-                    z-index: 99999;
-                    cursor: pointer;
-                }
-                input:checked + .radios{
-                    background: red;
-                }
-                .radios{
-                    display: inline-block;
-                    width: 0.72rem;
-                    height: 0.72rem;
+                    margin-right: 0.2rem;
                     border-radius: 50%;
-                    background: #ffffff;
-                    border: 1px solid #dddddd;
-                    margin-right: 0.3rem;
-                    transition: all 300ms;
+                    border:0.02rem solid #dddddd;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    img{
+                        width: 80%;
+                        height:80%;
+                    }
                 }
-                // width: 0.72rem;
-                // height:0.72rem;
-                // border-radius: 50%;
-
             }
             .type-right{
                 font-size:$f30;

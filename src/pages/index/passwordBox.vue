@@ -54,7 +54,11 @@
                     this.pwdList.push(ev.key)
                     this.ipt[this.pwdList.length] && this.ipt[this.pwdList.length].focus()
                 }
-                this.$emit('getPwd', this.pwdList.join(''))
+                if(this.pwdList.join('').length == 6){
+                     this.$emit('getPwd', this.pwdList.join(''));
+                     this.pwdList =[];
+                     
+                }
             },
             changePwd () {
                 let index = this.pwdList.length
@@ -83,7 +87,6 @@
     .am-payPwd {
         display: inline-block;
         border-radius: 5px;
-        padding: 10px 0;
         border: 1px solid #cccccc;
         position: relative;
         margin-left: 1px;
@@ -91,11 +94,11 @@
             text-align: center;
             font-size: 30px;
             float: left;
-            width: 40px;
-            height: 20px !important;
+            width: 1rem;
+            height: 1rem !important;
             color: #333;
             outline: #ff0067;
-            border-right: 1px solid #eee;
+            border-right: 1px solid rgba(209, 209, 209, 1);
             &:last-child{
                 border-right:0;
              }
