@@ -23,7 +23,7 @@
         <div class="details-intro" v-else>
             <span>已领{{info.useNumber}}个红包，共{{info.totalNumber}}个红包</span>
         </div>
-        <scroll-load :params="params">
+        <!-- <scroll-load :params="params">
             <ul class="details-list" slot="list">
                 <li
                     class="details-list-item"
@@ -49,7 +49,32 @@
                     </div>
                 </li>
             </ul>
-        </scroll-load>
+        </scroll-load> -->
+        <ul class="details-list">
+            <li
+                class="details-list-item"
+                v-for="item in list"
+                :key="item.id"
+            >
+                <div class="details-list-ct">
+                    <span class="img-box" :class="!item.headIcon && 'no-photo'">
+                        <img v-if="item.headIcon" :src="item.headIcon" />
+                    </span>
+                    <div class="name-box">
+                        <span class="name">{{item.nickName}}</span>
+                        <span class="time">{{item.createDate}}</span>
+                    </div>
+                    <div class="price-box">
+                        <span class="num">{{item.receiveMoney}} {{item.coinName}}</span>
+                        <span>≈￥{{item.receiveMoneyRMB}}</span>
+                    </div>
+                </div>
+                <div class="details-list-lucky" v-if="item.bestTip">
+                    <img src="@/assets/images/lucky-icon.png" class="lucky-icon" />
+                    <span>{{item.bestTip}}</span>
+                </div>
+            </li>
+        </ul>
     </div>
 </template>
 <script>
@@ -67,7 +92,7 @@ export default {
         }
     },
     created () {
-        // this.getInfo()
+        this.getInfo()
     },
     methods: {
         getList (val) {

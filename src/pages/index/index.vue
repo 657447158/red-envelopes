@@ -281,11 +281,14 @@ export default {
                 align-items: center;
                 justify-content: center;
             }
-             /deep/ .otc-modal-content{
+            /deep/ .otc-modal-content{
+                top: 50%;
+                left: 50%;    
                 background: transparent;
                 display: flex;
                 align-items: center;
                 justify-content: center;
+                transform: translate(-50%, -50%);
                 .pass-box{
                     width: 6.74rem;
                     height: 4.64rem;
