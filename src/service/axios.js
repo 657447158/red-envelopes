@@ -9,7 +9,7 @@ export default function ajax (p) {
         url: '',
         loading: true,
         params: {
-            token: '556f6259-b9c3-4ea2-bf34-a54ce2af14bc',
+            token: localStorage.getItem('candytoken'),
             mediaType: 'h5'
         }
     }

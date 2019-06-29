@@ -31,7 +31,6 @@
         }
         .nav-icon {
             margin-right: .16rem;
-            // font-size: $f40;
             &-1 {
                 width: .38rem;
                 height: .45rem;
@@ -43,10 +42,10 @@
                 background: url('../../assets/images/nav-icon-2-default.png') no-repeat center / 100% 100%;
             }
         }
-        .router-link-exact-active .nav-icon-1 {
+        .router-link-active .nav-icon-1 {
             background: url('../../assets/images/nav-icon-1-active.png') no-repeat center / 100% 100%;
         }
-        .router-link-exact-active .nav-icon-2 {
+        .router-link-active .nav-icon-2 {
             background: url('../../assets/images/nav-icon-2-active.png') no-repeat center / 100% 100%;
         }
     }
