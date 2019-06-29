@@ -26,7 +26,7 @@
                 type: String,
                 default: 'bottom',
                 validator: (value) => {
-                    return ['bottom', 'top', 'left', 'right'].indexOf(value) !== -1
+                    return ['bottom', 'top', 'left', 'right','none'].indexOf(value) !== -1
                 }
             },
             distance: {
@@ -59,6 +59,10 @@
                     case 'right':
                         str1 = 'right:' + this.distance / 100 + 'rem'
                         str2 = 'right:0;' + width + height
+                        break
+                    case 'none':
+                        str1="";
+                        str2="";
                         break
                     default:
                         str1 = 'bottom:' + this.distance / 100 + 'rem'
