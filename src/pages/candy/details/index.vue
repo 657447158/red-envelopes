@@ -1,50 +1,55 @@
 <template>
     <div class="details">
         <div class="details-top">
-            <span class="img-box">
-                <img src="" />
+            <span class="img-box" :class="!info.headIcon && 'no-photo'">
+                <img v-if="info.headIcon" :src="info.headIcon" />
             </span>
             <span class="name">{{info.nickName}}的红包</span>
             <span class="title">{{info.command}}</span>
             <div class="coin-box"><span>{{info.receiveMoney}}</span>{{info.coinName}}</div>
             <span class="rmb">人民币约{{info.receiveMoneyRMB}}元</span>
-            <div class="bind-box" v-if="info.hadMobile === 1">
-                <span>绑定手机号可提取</span>
-                <router-link to="/login">去绑定</router-link>
+            <div class="bind-box1" v-if="info.hadMobile === '1'">
+                <span>您的{{info.coinName}}已存入LMEtoken（账号{{info.mobile}}）</span>
+                <router-link to="/personal-index">打开看看</router-link>
             </div>
             <div class="bind-box" v-else>
                 <span>绑定手机号可提取</span>
                 <router-link to="/login">去绑定</router-link>
             </div>
         </div>
-        <div class="details-intro">
+        <div class="details-intro" v-if="info.useStatus === 1">
             <span>{{info.totalNumber}}个红包，{{info.useSeconds}}秒被抢光</span>
         </div>
-        <ul class="details-list">
-            <li
-                class="details-list-item"
-                v-for="item in list"
-                :key="item.id"
-            >
-                <div class="details-list-ct">
-                    <span class="img-box" :class="!item.headIcon && 'no-photo'">
-                        <img v-if="item.headIcon" :src="item.headIcon" />
-                    </span>
-                    <div class="name-box">
-                        <span class="name">{{item.nickName}}</span>
-                        <span class="time">{{item.createDate}}</span>
+        <div class="details-intro" v-else>
+            <span>已领{{info.useNumber}}个红包，共{{info.totalNumber}}个红包</span>
+        </div>
+        <scroll-load :params="params">
+            <ul class="details-list" slot="list">
+                <li
+                    class="details-list-item"
+                    v-for="item in list"
+                    :key="item.id"
+                >
+                    <div class="details-list-ct">
+                        <span class="img-box" :class="!item.headIcon && 'no-photo'">
+                            <img v-if="item.headIcon" :src="item.headIcon" />
+                        </span>
+                        <div class="name-box">
+                            <span class="name">{{item.nickName}}</span>
+                            <span class="time">{{item.createDate}}</span>
+                        </div>
+                        <div class="price-box">
+                            <span class="num">{{item.receiveMoney}} {{item.coinName}}</span>
+                            <span>≈￥{{item.receiveMoneyRMB}}</span>
+                        </div>
                     </div>
-                    <div class="price-box">
-                        <span class="num">{{item.receiveMoney}} {{item.coinName}}</span>
-                        <span>≈￥{{item.receiveMoneyRMB}}</span>
+                    <div class="details-list-lucky" v-if="item.bestTip">
+                        <img src="@/assets/images/lucky-icon.png" class="lucky-icon" />
+                        <span>{{item.bestTip}}</span>
                     </div>
-                </div>
-                <div class="details-list-lucky" v-if="item.bestTip">
-                    <img src="@/assets/images/lucky-icon.png" class="lucky-icon" />
-                    <span>{{item.bestTip}}</span>
-                </div>
-            </li>
-        </ul>
+                </li>
+            </ul>
+        </scroll-load>
     </div>
 </template>
 <script>
@@ -52,19 +57,29 @@ export default {
     data () {
         return {
             info: '',
-            list: []
+            list: [],
+            params: {
+                method: '_receiveCandy',
+                hasToken: 1,
+                _param_a: this.$route.query.id,
+                pageNum: 1
+            }
         }
     },
     created () {
-        this.getInfo()
+        // this.getInfo()
     },
     methods: {
+        getList (val) {
+            this.info = val
+            this.list = this.list.concat(val.candyRecordList)
+        },
         getInfo () {
             this.Ajax({
                 method: '_receiveCandy',
                 hasToken: 1,
                 _param_a: this.$route.query.id,
-                currentPage: 0
+                pageNum: 1
             }).then(res => {
                 if (res.code === '1') {
                     this.info = res.data
@@ -98,7 +113,6 @@ export default {
                 height: .97rem;
                 border-radius: 50%;
                 overflow: hidden;
-                background: $bg01;
             }
             .name { font-size: $f24; }
             .title {
@@ -132,6 +146,14 @@ export default {
                 a {
                     margin-left: .2rem;
                     color: $fc11;
+                    text-decoration: underline;
+                }
+            }
+            .bind-box1 {
+                font-size: $f24;
+                color: $fc08;
+                a {
+                    color: $fc08;
                     text-decoration: underline;
                 }
             }

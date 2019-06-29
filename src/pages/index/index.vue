@@ -195,10 +195,7 @@ export default {
             align-items: center;
             justify-content: space-between;
             padding: 0.2rem 0.2rem;
-            border-bottom: 1px solid $bor01;
-            // input{
-            //     display: none;
-            // }
+            border-bottom: 1px solid $bor01Opa;
             label{
                 display: flex;
                 align-items: center;
@@ -216,9 +213,9 @@ export default {
                     z-index: 99999;
                     cursor: pointer;
                 }
-                input:checked + .radios{
-                    background: red;
-                }
+                // input:checked + .radios{
+                //     background: red;
+                // }
                 .radios{
                     display: inline-block;
                     width: 0.72rem;
@@ -229,10 +226,6 @@ export default {
                     margin-right: 0.3rem;
                     transition: all 300ms;
                 }
-                // width: 0.72rem;
-                // height:0.72rem;
-                // border-radius: 50%;
-
             }
             .type-right{
                 font-size:$f30;

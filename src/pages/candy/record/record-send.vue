@@ -1,53 +1,43 @@
 <template>
     <div>
-        <ul class="record-send" v-if="list.length">
-            <li
-                tag="li"
-                class="record-send-item"
-                v-for="item in list"
-                :key="item.id"
-            >
-                <div>
-                    <p class="top">{{item.candyTypeName}}</p>
-                    <p>{{item.createDate}}</p>
-                </div>
-                <div>
-                    <p class="top">{{item.totalNumber}}{{item.coinName}}</p>
-                    <p class="status">{{item.useStatusName}}</p>
-                </div>
-            </li>
-        </ul>
-        <div v-else class="no-data"></div>
+        <scroll-load :params="params" @list="getList">
+            <ul class="record-send" slot="list">
+                <li
+                    tag="li"
+                    class="record-send-item"
+                    v-for="item in list"
+                    :key="item.id"
+                >
+                    <div>
+                        <p class="top">{{item.candyTypeName}}</p>
+                        <p>{{item.createDate}}</p>
+                    </div>
+                    <div>
+                        <p class="top">{{item.totalNumber}}{{item.coinName}}</p>
+                        <p class="status">{{item.useStatusName}}</p>
+                    </div>
+                </li>
+            </ul>
+        </scroll-load>
+        
     </div>
 </template>
 <script>
 export default {
     data () {
         return {
-            list: []
-        }
-    },
-    created () {
-        this.getMyOutCandy()
-    },
-    methods: {
-        getMyOutCandy () {
-            this.Ajax({
+            list: [],
+            params: {
                 method: 'getMyOutCandy',
                 hasToken: 1,
                 pageNum: 1
-            }).then(res => {
-                if (res.code === '1') {
-                    this.list = res.data
-                } else {
-                    this.Tost({
-                        type: 'error',
-                        message: res.msg
-                    })
-                }
-            }).catch(err => {
-                console.log(err)
-            })
+            }
+        }
+    },
+    methods: {
+        getList (val) {
+            console.log(val)
+            this.list = this.list.concat(val)
         }
     }
 }

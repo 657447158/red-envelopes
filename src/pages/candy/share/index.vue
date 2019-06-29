@@ -31,8 +31,12 @@
 export default {
     data () {
         return {
-            show: true
+            show: false,
+            info: ''
         }
+    },
+    created () {
+        this.getInfo()
     },
     methods: {
         hide () {
@@ -40,7 +44,26 @@ export default {
         },
         popUp () {
             this.show = true
-        }
+        },
+        getInfo () {
+            this.Ajax({
+                method: '_receiveCandy',
+                hasToken: 1,
+                _param_a: this.id,
+                pageNum: 1
+            }).then(res => {
+                if (res.code === '1') {
+                    this.info = res.data
+                } else {
+                    this.Toast({
+                        type: 'error',
+                        message: res.msg
+                    })
+                }
+            }).catch(err => {
+                console.log(err)
+            })
+        },
     }
 }
 </script>

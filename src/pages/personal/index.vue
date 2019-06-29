@@ -5,7 +5,7 @@
                 <span>资产价值(元)</span>
                 <span class="money">{{info.rmbValue}}</span>
             </div>
-            <span class="extract">提款</span>
+            <!-- <span class="extract">提款</span> -->
         </div>
         <ul class="personal-list">
             <li
@@ -25,7 +25,7 @@
                 </div>
             </li>
         </ul>
-        <div class="check-more">
+        <div class="check-more" @click="showMore" v-if="more">
             <span>查看更多</span>
             <span class="icon-mobile">&#xe6af;</span>
         </div>
@@ -46,6 +46,7 @@ export default {
     data () {
         return {
             info: '',
+            more: true,
             walletList: []
         }
     },
@@ -54,9 +55,14 @@ export default {
     },
     computed: {
         filterWalletList () {
-            return this.walletList.filter((item, index) => {
-                return index < 3
-            })
+            if (this.more) {
+                return this.walletList.filter((item, index) => {
+                    return index < 3
+                })
+            } else {
+                return this.walletList
+            }
+            
         }
     },
     methods: {
@@ -77,6 +83,10 @@ export default {
             }).catch(err => {
                 console.log(err)
             })
+        },
+        // 显示更多
+        showMore () {
+            this.more = false
         }
     }
 }

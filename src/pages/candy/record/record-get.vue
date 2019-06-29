@@ -1,55 +1,43 @@
 <template>
     <div>
-        <ul class="record-get" v-if="list.length">
-            <li
-                class="record-get-item"
-                v-for="item in list"
-                :key="item.id"
-            >
-                <span class="img-box" :class="!item.headIcon && 'no-photo'">
-                    <img v-if="item.headIcon" :src="item.headIcon" />
-                </span>
-                <div class="from">
-                    <p class="from-top">来自<span class="weight">{{item.nickName}}</span></p>
-                    <p>{{item.createDate}}</p>
-                </div>
-                <div>
-                    <p class="weight">{{item.receiveMoney}}{{item.coinName}}</p>
-                    <p class="price">￥{{item.receiveMoneyRMB}}</p>
-                </div>
-            </li>
-        </ul>
-        <div v-else class="no-data"></div>
+        <scroll-load :params="params" @list="getList">
+            <ul class="record-get" slot="list">
+                <li
+                    class="record-get-item"
+                    v-for="item in list"
+                    :key="item.id"
+                >
+                    <span class="img-box" :class="!item.headIcon && 'no-photo'">
+                        <img v-if="item.headIcon" :src="item.headIcon" />
+                    </span>
+                    <div class="from">
+                        <p class="from-top">来自<span class="weight">{{item.nickName}}</span></p>
+                        <p>{{item.createDate}}</p>
+                    </div>
+                    <div>
+                        <p class="weight">{{item.receiveMoney}}{{item.coinName}}</p>
+                        <p class="price">￥{{item.receiveMoneyRMB}}</p>
+                    </div>
+                </li>
+            </ul>
+        </scroll-load>
     </div>
 </template>
 <script>
 export default {
     data () {
         return {
-            list: []
-        }
-    },
-    created () {
-        this.getMyInCandy()
-    },
-    methods: {
-        getMyInCandy () {
-            this.Ajax({
+            list: [],
+            params: {
                 method: 'getMyInCandy',
                 hasToken: 1,
                 pageNum: 1
-            }).then(res => {
-                if (res.code === '1') {
-                    this.list = res.data
-                } else {
-                    this.Tost({
-                        type: 'error',
-                        message: res.msg
-                    })
-                }
-            }).catch(err => {
-                console.log(err)
-            })
+            }
+        }
+    },
+    methods: {
+        getList (val) {
+            this.list = this.list.concat(val)
         }
     }
 }
@@ -57,7 +45,7 @@ export default {
 <style lang="scss" scoped>
     .record-get {
         &-item {
-            padding: 0 .12rem 0 .22rem;
+            padding: 0 .1rem 0 .2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
