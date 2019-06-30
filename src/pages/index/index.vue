@@ -16,14 +16,13 @@
                 </div>
             </div>
             <div class="item border-bottom">
-                <span class="left">{{candyType===1?"单个总量":"代币总量"}}</span>
+                <span class="left">{{candyType === 1 ? '单个总量' : '代币总量'}}</span>
                 <div class="right">
-                    <!-- <span class="gray mr-12">1333</span>枚 -->
                      <input type="number" placeholder="发放个数" v-model="count" min="0">枚
                 </div>
             </div>
             <div class="item-sub">
-                <span class="left gray">持有 ETH 总量<span>{{totalCoin}}</span></span>
+                <span class="left gray">持有 {{coinId}} 总量<span>{{totalCoin}}</span></span>
                 <div class="right">
                     <span class="gray">改为</span><span class="green" @click="changeType">{{candyType===1?"手气红包":"普通红包"}}</span>
                 </div>
@@ -49,8 +48,8 @@
                 @click='selectCoinsType(item)'
             >
                 <div class="type-left">
-                    <div class="avatar">
-                        <img :src="item.image" alt="">
+                    <div class="avatar" :class="!item.image && 'no-photo'">
+                        <img v-if="item.image" :src="item.image" />
                     </div>
                     {{item.title}}
                 </div>
@@ -82,9 +81,9 @@ export default {
             showPassword:false,
             coinsType:[],
             coinId:0,
-            totalNumber:0,
-            totalMoney:0,//1手气红包，糖果总量
-            oneMoney:0,//普通红包，糖果单个总量
+            totalNumber: '',
+            totalMoney: 0,//1手气红包，糖果总量
+            oneMoney: 0,//普通红包，糖果单个总量
             command:"",
             count:'',
             totalCoin:0,
