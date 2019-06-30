@@ -86,7 +86,7 @@ export default {
             oneMoney: 0,//普通红包，糖果单个总量
             command:"",
             count:'',
-            totalCoin:0,
+            totalCoin: 0,
         }
     },
     mounted(){
@@ -94,8 +94,8 @@ export default {
     },
     methods:{
         selectCoinsType(item){
-            console.log(item);
             this.coinId = item.name;
+            this.totalCoin = item.totalCoin
             this.show = false;
         },
         changeType(){
@@ -125,15 +125,14 @@ export default {
                 hasToken: 1,
                 payPassword:psw
             }).then(res => {
-                console.log(res);
-               if(res.code === '1'){
-                   this.addCandy(res.data);
-               }else{
-                   this.Toast({
+                if(res.code === '1'){
+                    this.addCandy(res.data);
+                }else{
+                    this.Toast({
                         type: 'error',
                         message: res.msg
                     })
-               }
+                }
             }).catch(err => {
                 console.log(err)
             })
@@ -153,7 +152,6 @@ export default {
                 payCertificate:data.payCertificate,
             }).then(res => {
                if(res.code === '1'){
-                //    this.addCandy(res.data);
                     console.log("发放成功");
                }else{
                    this.Toast({
@@ -173,8 +171,8 @@ export default {
                 console.log(res);
                 if(res.code ==="1"){
                     this.coinsType = res.data;
-                    console.log(this.coinsType);
                     this.coinId = this.coinsType[0].name;
+                    this.totalCoin = this.coinsType[0].totalCoin;
                 }
             }).catch(err => {
                 console.log(err)
