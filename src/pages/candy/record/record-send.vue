@@ -36,7 +36,6 @@ export default {
     },
     methods: {
         getList (val) {
-            console.log(val)
             this.list = this.list.concat(val)
         }
     }
