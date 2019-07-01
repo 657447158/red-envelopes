@@ -19,8 +19,8 @@ export default {
       pwdList: [],
       oldPwdList: [],
       isDelete: false,
-      ipt: "",
-      password: "",
+      ipt: '',
+      password: '',
       isFocus: false
     };
   },
@@ -32,7 +32,7 @@ export default {
       this.isFocus = false;
       this.password = "";
     },
-    keyUp(ev) {
+    keyUp() {
       if (this.password.length === 6) {
         this.$emit("getPwd", this.password);
       }
@@ -58,9 +58,8 @@ export default {
     right: 0;
     top: 0;
     bottom: 0;
-    background: red;
     width: 100%;
-    opacity: 0;
+    opacity: 0;     
   }
   .shortInput {
     display: flex;

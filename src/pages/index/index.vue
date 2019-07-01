@@ -4,7 +4,7 @@
             <img src="" />
         </span>
         <p class="give-out">共发放
-             <span v-if="candyType ===1">{{oneMoney*totalNumber}}</span> 
+             <span v-if="candyType === 1">{{oneMoney * totalNumber}}</span> 
              <span v-else>{{totalMoney}}</span>
              枚 {{coinId.name}}</p>
         <div class="info-box">
@@ -22,7 +22,7 @@
                 </div>
             </div>
             <div class="item-sub">
-                <span class="left gray">持有 {{coinId}} 总量<span>{{totalCoin}}</span></span>
+                <span class="left gray">持有 {{coinId.name}} 总量<span>{{totalCoin}}</span></span>
                 <div class="right">
                     <span class="gray">改为</span><span class="green" @click="changeType">{{candyType===1?"手气红包":"普通红包"}}</span>
                 </div>
@@ -63,7 +63,7 @@
                     <h5>请输入支付密码</h5>
                     <p>共需支付 <span v-if="candyType ===1">{{oneMoney*totalNumber}}</span><span v-else>{{totalMoney}}</span>  {{coinId.name}}</p>
                     <password-box @getPwd="checkPassword"></password-box>
-                     <router-link tag="div" to="personal-index" class="tips">忘记密码？</router-link>
+                    <router-link tag="div" to="personal-index" class="tips">忘记密码？</router-link>
                 </div>
             </otc-modal>
         </div>
@@ -76,81 +76,85 @@ import PasswordBox from './passwordBox';
 export default {
     data(){
         return{
-            show:false,
-            candyType:1,
-            showPassword:false,
-            coinsType:[],
-            coinId:{
-                name:'',
+            show: false,
+            candyType: 1,
+            showPassword: false,
+            coinsType: [],
+            coinId: {
+                name:''
             },
-            totalNumber:0,
-            totalMoney:0,//1手气红包，糖果总量
-            oneMoney:0,//普通红包，糖果单个总量
-            command:"",
-            count:'',
-            totalCoin: 0,
+            totalNumber: '',
+            totalMoney: 0, // 1手气红包，糖果总量
+            oneMoney: 0, // 普通红包，糖果单个总量
+            command: '',
+            count: '',
+            totalCoin: 0
         }
     },
-    mounted(){
-        this.getCoinsType();
+    mounted () {
+        this.getCoinsType()
     },
-    methods:{
-        selectCoinsType(item){
-            console.log(item);
+    methods: {
+        selectCoinsType (item) {
             this.coinId = item;
             this.totalCoin = item.totalCoin;
             this.show = false;
         },
-        changeType(){
+        changeType () {
             this.candyType = this.candyType ===1?2:1;
         },
-        showMoadl(){
+        showMoadl () {
             this.show = true;
         },
-        hide(){
+        hide () {
             this.show = false;
         },
-        showPasswordMoadl(){
+        showPasswordMoadl () {
+            if (!this.totalMoney) {
+                this.Toast({
+                    message: '请输入正确的红包发放数'
+                })
+                return
+            }
             this.showPassword = true;
         },
-        hidePassword(){
+        hidePassword () {
             this.showPassword = false;
         },
-        changeChoose(){
+        changeChoose () {
             setTimeout(()=>{
                 this.hide()
-            },500);
+            }, 500);
         },
-        checkPassword(psw){
-             this.showPassword = false;
-            if(this.candyType ===1){
-                console.log(this.candyType);
-                 if(this.oneMoney*this.totalNumber >this.totalCoin){
-                      this.Toast({
+        checkPassword (psw) {
+            this.showPassword = false;
+            if (this.candyType === 1) {
+                if (this.oneMoney * this.totalNumber > this.totalCoin){
+                    this.Toast({
                         type: 'error',
                         message: '余额不足'
                     })
-                 }else if(this.oneMoney == 0 ||this.totalNumber ==0){
-                     this.Toast({
+                } else if (this.oneMoney == 0 || this.totalNumber == 0){
+                    this.Toast({
                         type: 'error',
                         message: '发放个数和红包个数不能为0'
                     })
-                 }
-                 return;
-             }else{
-                 if(this.totalMoney >this.totalCoin){
-                      this.Toast({
+                    return;
+                }
+            } else {
+                if(this.totalMoney >this.totalCoin){
+                    this.Toast({
                         type: 'error',
                         message: '余额不足'
                     })
-                     return;
-                 }
+                    return;
+                }
             }
             //发送请求
             this.Ajax({
                 method: 'checkUserPayPassword',
                 hasToken: 1,
-                payPassword:psw
+                payPassword: psw
             }).then(res => {
                 if(res.code === '1'){
                     this.addCandy(res.data);
@@ -164,28 +168,28 @@ export default {
                 console.log(err)
             })
         },
-        addCandy(data){
+        addCandy (data) {
             this.Ajax({
                 method: 'addCandy',
                 hasToken: 1,
-                requestNo:new Date().getTime(),
-                coinId:this.coinId.id,
-                candyType:this.candyType,
-                totalNumber:this.totalNumber,
-                totalMoney:this.totalMoney,
-                oneMoney:this.oneMoney,
-                command:this.command,
-                payTimestamps:data.payTimestamps,
-                payCertificate:data.payCertificate,
+                requestNo: new Date().getTime(),
+                coinId: this.coinId.id,
+                candyType: this.candyType,
+                totalNumber: this.totalNumber,
+                totalMoney: this.totalMoney,
+                oneMoney: this.oneMoney,
+                command: this.command,
+                payTimestamps: data.payTimestamps,
+                payCertificate: data.payCertificate,
             }).then(res => {
-               if(res.code === '1'){
+                if(res.code === '1'){
                     console.log("发放成功");
-               }else{
-                   this.Toast({
+                } else {
+                    this.Toast({
                         type: 'error',
                         message: res.msg
                     })
-               }
+                }
             }).catch(err => {
                 console.log(err)
             })
@@ -195,8 +199,7 @@ export default {
                 method: 'getCoins',
                 hasToken: 1,
             }).then(res => {
-                console.log(res);
-                if(res.code ==="1"){
+                if (res.code ==="1") {
                     this.coinsType = res.data;
                     this.coinId = this.coinsType[0];
                     this.totalCoin = this.coinsType[0].totalCoin;
@@ -204,7 +207,7 @@ export default {
             }).catch(err => {
                 console.log(err)
             })
-        },
+        }
     },
     watch:{
         count(val){
