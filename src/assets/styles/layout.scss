@@ -74,9 +74,10 @@ img {
 }
 
 .no-data {
+	padding-top: 2rem;
 	width: 100%;
 	height: 5.34rem;
-	padding-top: 2rem;
+	color: $fc04;
 	background: url('../images/no-data.png') no-repeat center / 3.34rem 2.57rem;
 }
 

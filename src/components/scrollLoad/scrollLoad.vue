@@ -73,7 +73,7 @@
                         this.flag = true
                         this.dataList(data.data)
                         this.isLastPage = data.page.isLastPage
-                        if (data.data.length > 0) {
+                        if (data.data.length > 0 || (data.data.candyRecordList && data.data.candyRecordList.length > 0)) {
                             if (data.page.isLastPage) {
                                 this.noData = false
                                 this.noMore = true

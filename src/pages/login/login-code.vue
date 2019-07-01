@@ -14,6 +14,7 @@
     </div>
 </template>
 <script>
+    import md5 from 'blueimp-md5'
     export default {
         data () {
             return {
@@ -25,7 +26,22 @@
         },
         methods: {
             getCode () {
-                this.countdown()
+                let timestamp = new Date().getTime()
+                this.Ajax({
+                    method: 'getVerifycode',
+                    hasToken: 0,
+                    mobile: this.mobile,
+                    smsType: 15,
+                    smsBusi: 0,
+                    date: timestamp,
+                    check: md5(this.mobile + 'lme520' + timestamp)
+                }).then(res => {
+                    if (res.code === '1') {
+                        this.countdown()
+                    }
+                }).catch(err => {
+                    console.log(err)
+                })
             },
             countdown () {
                 this.limitTime--
