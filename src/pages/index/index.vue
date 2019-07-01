@@ -6,12 +6,12 @@
         <p class="give-out">共发放
              <span v-if="candyType ===1">{{oneMoney*totalNumber}}</span> 
              <span v-else>{{totalMoney}}</span>
-             枚 {{coinId}}</p>
+             枚 {{coinId.name}}</p>
         <div class="info-box">
             <div class="item border-bottom">
                 <span class="left">代币</span>
                 <div class="right" @click="showMoadl">
-                    <span class="orange mr-12">{{coinId}}</span>
+                    <span class="orange mr-12">{{coinId.name}}</span>
                     <span class="icon icon-mobile">&#xe6a8;</span>
                 </div>
             </div>
@@ -61,7 +61,7 @@
             <otc-modal :show="showPassword" @hide="hidePassword" className="modal-wrapper" dir="none">
                 <div class="pass-box">
                     <h5>请输入支付密码</h5>
-                    <p>共需支付 <span v-if="candyType ===1">{{oneMoney*totalNumber}}</span><span v-else>{{totalMoney}}</span>  {{coinId}}</p>
+                    <p>共需支付 <span v-if="candyType ===1">{{oneMoney*totalNumber}}</span><span v-else>{{totalMoney}}</span>  {{coinId.name}}</p>
                     <password-box @getPwd="checkPassword"></password-box>
                      <router-link tag="div" to="personal-index" class="tips">忘记密码？</router-link>
                 </div>
@@ -80,10 +80,12 @@ export default {
             candyType:1,
             showPassword:false,
             coinsType:[],
-            coinId:0,
-            totalNumber: '',
-            totalMoney: 0,//1手气红包，糖果总量
-            oneMoney: 0,//普通红包，糖果单个总量
+            coinId:{
+                name:'',
+            },
+            totalNumber:0,
+            totalMoney:0,//1手气红包，糖果总量
+            oneMoney:0,//普通红包，糖果单个总量
             command:"",
             count:'',
             totalCoin: 0,
@@ -94,8 +96,9 @@ export default {
     },
     methods:{
         selectCoinsType(item){
-            this.coinId = item.name;
-            this.totalCoin = item.totalCoin
+            console.log(item);
+            this.coinId = item;
+            this.totalCoin = item.totalCoin;
             this.show = false;
         },
         changeType(){
@@ -119,7 +122,31 @@ export default {
             },500);
         },
         checkPassword(psw){
-            this.showPassword = false;
+             this.showPassword = false;
+            if(this.candyType ===1){
+                console.log(this.candyType);
+                 if(this.oneMoney*this.totalNumber >this.totalCoin){
+                      this.Toast({
+                        type: 'error',
+                        message: '余额不足'
+                    })
+                 }else if(this.oneMoney == 0 ||this.totalNumber ==0){
+                     this.Toast({
+                        type: 'error',
+                        message: '发放个数和红包个数不能为0'
+                    })
+                 }
+                 return;
+             }else{
+                 if(this.totalMoney >this.totalCoin){
+                      this.Toast({
+                        type: 'error',
+                        message: '余额不足'
+                    })
+                     return;
+                 }
+            }
+            //发送请求
             this.Ajax({
                 method: 'checkUserPayPassword',
                 hasToken: 1,
@@ -142,7 +169,7 @@ export default {
                 method: 'addCandy',
                 hasToken: 1,
                 requestNo:new Date().getTime(),
-                coinId:this.coinId,
+                coinId:this.coinId.id,
                 candyType:this.candyType,
                 totalNumber:this.totalNumber,
                 totalMoney:this.totalMoney,
@@ -171,7 +198,7 @@ export default {
                 console.log(res);
                 if(res.code ==="1"){
                     this.coinsType = res.data;
-                    this.coinId = this.coinsType[0].name;
+                    this.coinId = this.coinsType[0];
                     this.totalCoin = this.coinsType[0].totalCoin;
                 }
             }).catch(err => {
