@@ -59,7 +59,9 @@ export default {
     top: 0;
     bottom: 0;
     width: 100%;
-    opacity: 0;     
+    color: transparent;
+    caret-color: transparent;
+    background: transparent;
   }
   .shortInput {
     display: flex;
