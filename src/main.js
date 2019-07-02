@@ -17,9 +17,18 @@ router.beforeEach((to, from, next) => {
     nodeList[i].click()
   }
   if (to.query.token) {
-    localStorage.setItem("candytoken", to.query.token)
+    localStorage.setItem('candytoken', to.query.token)
   }
-  next()
+  if (!to.path.match(/login/g)) {
+    if (localStorage.getItem('candytoken')) {
+      next()
+    } else {
+      next({path: '/login'})
+    }
+  } else {
+    next()
+  }
+  
 })
 
 new Vue({

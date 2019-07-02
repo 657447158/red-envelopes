@@ -31,8 +31,7 @@ export default {
             this.Ajax({
                 method: 'checkCandy',
                 hasToken: 1,
-                _param_a: this.id,
-                pageNum: 1
+                _param_a: this.id
             }).then(res => {
                 if (res.code === '1') {
                     this.info = res.data

@@ -1,9 +1,9 @@
 <template>
     <div class="share">
         <img src="@/assets/images/share-candy.png" class="share-btn" @click="popUp" />
-        <span class="title">红包一响，黄金万两</span>
-        <span class="avator-box">
-            <img src="" />
+        <span class="title">{{info.command}}</span>
+        <span class="avator-box" :class="!info.headIcon && 'no-photo'">
+            <img v-if="info.headIcon" :src="info.headIcon" />
         </span>
         <otc-modal :show="show" @hide="hide">
             <div class="share-modal">
@@ -32,7 +32,8 @@ export default {
     data () {
         return {
             show: false,
-            info: ''
+            info: '',
+            id: this.$route.query.id
         }
     },
     created () {
@@ -47,10 +48,9 @@ export default {
         },
         getInfo () {
             this.Ajax({
-                method: '_receiveCandy',
+                method: 'checkCandy',
                 hasToken: 1,
-                _param_a: this.id,
-                pageNum: 1
+                _param_a: this.id
             }).then(res => {
                 if (res.code === '1') {
                     this.info = res.data
