@@ -4,9 +4,11 @@
             <img src="" />
         </span>
         <p class="give-out">共发放
-             <span v-if="candyType === 1">{{oneMoney * totalNumber}}</span> 
-             <span v-else>{{totalMoney}}</span>
-             枚 {{coinId.name}}</p>
+            <!-- 手气红包 -->
+            <span v-if="candyType === 1">{{totalMoney}}</span>
+            <!-- 普通红包 -->
+            <span v-else>{{oneMoney * totalNumber}}</span> 
+            枚 {{coinId.name}}</p>
         <div class="info-box">
             <div class="item border-bottom">
                 <span class="left">代币</span>
@@ -16,7 +18,7 @@
                 </div>
             </div>
             <div class="item border-bottom">
-                <span class="left">{{candyType === 1 ? '单个总量' : '代币总量'}}</span>
+                <span class="left">{{candyType === 1 ? '代币总量' : '单个总量'}}</span>
                 <div class="right">
                      <input type="number" placeholder="发放个数" v-model="count" min="0">枚
                 </div>
@@ -24,7 +26,7 @@
             <div class="item-sub">
                 <span class="left gray">持有 {{coinId.name}} 总量<span>{{totalCoin}}</span></span>
                 <div class="right">
-                    <span class="gray">改为</span><span class="green" @click="changeType">{{candyType === 1 ? '手气红包' : '普通红包'}}</span>
+                    <span class="gray">改为</span><span class="green" @click="changeType">{{candyType === 1 ? '普通红包' : '手气红包'}}</span>
                 </div>
             </div>
             <div class="item border-bottom">
@@ -34,7 +36,7 @@
                 </div>
             </div>
             <div class="item border-bottom">
-                <input class="left gray" placeholder="红包一响，黄金万两" v-model="command">
+                <input class="left command-input" placeholder="红包一响，黄金万两" v-model="command">
                 <span class="right"></span>
             </div>
         </div>
@@ -61,7 +63,12 @@
             <otc-modal :show="showPassword" @hide="hidePassword" className="modal-wrapper" dir="none">
                 <div class="pass-box">
                     <h5>请输入支付密码</h5>
-                    <p>共需支付 <span v-if="candyType ===1">{{oneMoney*totalNumber}}</span><span v-else>{{totalMoney}}</span>  {{coinId.name}}</p>
+                    <p>
+                        共需支付
+                        <span v-if="candyType === 1">{{totalMoney}}</span>
+                        <span v-else>{{oneMoney * totalNumber}}</span>
+                        <span> {{coinId.name}}</span>
+                    </p>
                     <password-box @getPwd="checkPassword"></password-box>
                     <router-link tag="div" to="personal-index" class="tips">忘记密码？</router-link>
                 </div>
@@ -77,14 +84,15 @@ export default {
     data(){
         return{
             show: false,
-            candyType: 0,
+            // 1.手气红包 2.普通红包
+            candyType: 1,
             showPassword: false,
             coinsType: [],
             coinId: {
                 name:''
             },
             totalNumber: '',
-            totalMoney: 0, // 1手气红包，糖果总量
+            totalMoney: 0, // 手气红包，糖果总量
             oneMoney: 0, // 普通红包，糖果单个总量
             command: '',
             count: '',
@@ -101,7 +109,7 @@ export default {
             this.show = false;
         },
         changeType () {
-            this.candyType = this.candyType === 1 ? 0 : 1;
+            this.candyType = this.candyType === 1 ? 2 : 1;
         },
         showMoadl () {
             this.show = true;
@@ -112,7 +120,7 @@ export default {
         showPasswordMoadl () {
             if (!this.count) {
                 let msg = ''
-                if (this.candyType === 0) {
+                if (this.candyType === 1) {
                     // 手气红包
                     msg = '请输入正确的代币总量'
                 } else {
@@ -176,12 +184,12 @@ export default {
                 totalNumber: this.totalNumber,
                 totalMoney: this.totalMoney,
                 oneMoney: this.oneMoney,
-                command: this.command,
+                command: this.command || '红包一响，黄金万两',
                 payTimestamps: data.payTimestamps,
                 payCertificate: data.payCertificate,
             }).then(res => {
                 if (res.code === '1') {
-                    this.$router.push({path: '/share-candy', query: {id: res._param_a}})
+                    this.$router.push({path: '/share-candy', query: {id: res.data._param_a}})
                 } else {
                     this.Toast({
                         type: 'error',
@@ -208,7 +216,7 @@ export default {
         }
     },
     watch:{
-        count(val){
+        count(val) {
             this.oneMoney = val;
             this.totalMoney = val;
         }
@@ -258,7 +266,7 @@ export default {
         .info-box{
             width: 100%;
             padding: .67rem .2rem;
-            .item{
+            .item {
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
@@ -273,6 +281,9 @@ export default {
                         text-align: right;
                         line-height: .34rem;
                     }
+                }
+                .command-input {
+                    height: 100%;
                 }
             }
             .item-sub {
@@ -301,13 +312,13 @@ export default {
                 opacity: .8;
             }
         }
-        .pass-wrapper{
-            .modal-wrapper{
+        .pass-wrapper {
+            .modal-wrapper {
                 display: flex;
                 align-items: center;
                 justify-content: center;
             }
-            /deep/ .otc-modal-content{
+            /deep/ .otc-modal-content {
                 top: 50%;
                 left: 50%;    
                 background: transparent;
@@ -315,15 +326,15 @@ export default {
                 align-items: center;
                 justify-content: center;
                 transform: translate(-50%, -50%);
-                .pass-box{
+                .pass-box {
                     width: 6.74rem;
                     height: 4.64rem;
                     border-radius: 0.1rem;
-                    background: #ffffff;
+                    background: $bg01;
                     display: flex;
                     flex-direction: column;
                     align-items: center;
-                    h5{
+                    h5 {
                         // margin: 0.66rem 0;
                         margin-top: 0.66rem;
                         text-align: center;
@@ -331,11 +342,11 @@ export default {
                         color: #333333;
                         font-weight: normal;
                     }
-                    p{
+                    p {
                         margin: 0.4rem;
                         color:rgba(153,153,153,1);
                         font-size: 0.28rem;
-                        span{
+                        span {
                             color: $fc11 ;
                         }
                     }

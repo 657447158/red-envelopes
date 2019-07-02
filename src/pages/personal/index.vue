@@ -29,6 +29,10 @@
             <span>查看更多</span>
             <span class="icon-mobile">&#xe6af;</span>
         </div>
+        <div class="check-more" @click="showMore" v-else>
+            <span>收起</span>
+            <span class="icon-mobile">&#xe82d;</span>
+        </div>
         <div class="personal-bottom">
             <div class="personal-bottom-item">
                 <span>红包记录</span>
@@ -86,7 +90,7 @@ export default {
         },
         // 显示更多
         showMore () {
-            this.more = false
+            this.more = !this.more
         }
     }
 }
