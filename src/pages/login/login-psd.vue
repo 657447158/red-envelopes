@@ -1,7 +1,7 @@
 <template>
     <div class="login">
         <div class="login-box">
-            <span class="label">+86 <i class="icon-mobile">&#xe6af;</i></span>
+            <country-code></country-code>
             <input type="number" maxlength="11" placeholder="请输入手机号" v-model="mobile" />
         </div>
         <div class="login-box">
@@ -12,14 +12,23 @@
     </div>
 </template>
 <script>
+    import CountryCode from './country-code'
     export default {
+        components: {
+            'country-code': CountryCode
+        },
         data () {
             return {
                 mobile: '',
-                password: ''
+                password: '',
+                selectedCode: '86'
             }
         },
         methods: {
+            // 获取国家代码
+            getSelectedCode (val) {
+                this.selectedCode = val
+            },
             bindPhone () {
                 if (!this.mobile) {
                     this.Toast({
@@ -37,9 +46,9 @@
                     method: 'bindLogin',
                     hasToken: 0,
                     mobile: this.mobile,
-                    password: this.password
+                    password: this.password,
+                    countryCode: this.selectedCode
                 }).then(res => {
-                    console.log(res)
                     if (res.code === '1') {
                         this.Toast({
                             type: 'sucess',

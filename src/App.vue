@@ -1,6 +1,8 @@
 <template>
 	<div id="app">
-		<router-view></router-view>
+		<keep-alive include="login">
+			<router-view></router-view>
+		</keep-alive>
 		<Footer v-if="showFooter"/>
 	</div>
 </template>
@@ -15,7 +17,7 @@ export default {
     },
     data () {
 		return {
-			showFooter:true,
+			showFooter: true
 		}
     },
     watch:{
