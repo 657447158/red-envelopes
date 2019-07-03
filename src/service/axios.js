@@ -27,7 +27,6 @@ export default function ajax (p) {
                 duration: 1000000
             })
         }
-        // 设置token
         axios({
             method: options.type,
             baseURL: '/api',
