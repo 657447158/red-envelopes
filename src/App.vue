@@ -1,8 +1,6 @@
 <template>
 	<div id="app">
-		<keep-alive include="login">
-			<router-view></router-view>
-		</keep-alive>
+		<router-view></router-view>
 		<Footer v-if="showFooter"/>
 	</div>
 </template>
@@ -22,7 +20,7 @@ export default {
     },
     watch:{
 		$route(to){   
-			if(to.name ===INDEX || to.name === PERSONAL){
+			if(to.name === INDEX || to.name === PERSONAL){
 				this.showFooter = true;
 			} else {
 				this.showFooter = false;

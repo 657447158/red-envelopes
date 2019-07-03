@@ -15,15 +15,16 @@
 </template>
 <script>
 export default {
-    name: 'country-code',
     data () {
         return {
-            codeList: [],
+            codeList: localStorage.getItem('candyCountryList') ? JSON.parse(localStorage.getItem('candyCountryList')) : [],
             selectedCode: 86
         }
     },
     created () {
-        this.getCountryCodeList()
+        if (!localStorage.getItem('candyCountryList')) {
+            this.getCountryCodeList()
+        }
     },
     methods: {
         // 获取国家编码
@@ -34,6 +35,9 @@ export default {
             }).then(res => {
                 if (res.code === '1') {
                     this.codeList = res.data
+                    if (!localStorage.getItem('candyCountryList')) {
+                        localStorage.setItem('candyCountryList', JSON.stringify(this.codeList))
+                    }
                 }
             }).catch(err => {
                 console.log(err)
